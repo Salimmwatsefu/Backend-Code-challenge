@@ -63,6 +63,9 @@ def questions():
 
     return jsonify({"questions": questions})
 
+
+
+
 #POST A QUESTION
 
 @app.route('/questions', methods=['POST'])
@@ -80,6 +83,22 @@ def post_question():
     conn.commit()
 
     return jsonify({"message": "Question posted successfully."})
+
+
+
+
+#FETCH A SPECIFIC QUESTION AND ALL IT'S ANSWERS
+
+@app.route('/questions/<int:question_id>', methods=['GET'])
+def get_question(question_id):
+    
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM questions WHERE id=?", (question_id,))
+    question = cursor.fetchone()
+    cursor.execute("SELECT * FROM answers WHERE question_id=?", (question_id,))
+    answers = cursor.fetchall()
+
+    return jsonify({"question": question, "answers": answers})
 
 
 
