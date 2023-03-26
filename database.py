@@ -26,3 +26,5 @@ FOREIGN KEY (question_id) REFERENCES questions(id)
 FOREIGN KEY (writer_id) REFERENCES users(id)
 )''')
 
+conn.commit()
+conn.close()
