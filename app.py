@@ -138,7 +138,7 @@ def post_answer(question_id):
     cursor.execute("INSERT INTO answers (body, question_id, writer_id) VALUES (?, ?, ?)", (body, question_id, user_id))
     conn.commit()
 
-    return jsonify({"message": "Answer posted successfully."})
+    return jsonify({"message": "Answer has been posted successfully."})
 
 #UPDATING AN ANSWER
 
@@ -164,6 +164,7 @@ def update_answer(question_id, answer_id):
 
 @app.route('/questions/<int:question_id>/answers/<int:answer_id>', methods=['DELETE'])
 def delete_answer(question_id, answer_id):
+    
     # Check if the user is authenticated and is the author of the answer
     user_id = request.cookies.get('user_id')
     cursor = conn.cursor()

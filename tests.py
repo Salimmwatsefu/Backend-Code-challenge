@@ -16,7 +16,7 @@ def test_register(client):
 
 
 def test_login(client):
-    response = client.post('/auth/login', json={"username": "testuser", "password": "testpassword"})
+    response = client.post('/auth/login', json={"username": "cristiano", "password": "testpassword"})
     assert response.status_code == 200
     assert b'User logged in successfully' in response.data
 
