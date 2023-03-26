@@ -87,7 +87,7 @@ def post_question():
 
 
 
-#FETCH A SPECIFIC QUESTION AND ALL IT'S ANSWERS
+#FETCH A SPECIFIC QUESTION AND ALL ITS ANSWERS
 
 @app.route('/questions/<int:question_id>', methods=['GET'])
 def get_question(question_id):
@@ -120,6 +120,25 @@ def delete_questions(question_id):
     conn.commit()
 
     return jsonify({"message": "Question has been deleted."})
+
+
+#POST AN ANSWER TO A QUESTION
+
+@app.route('/questions/<int:question_id>/answers', methods=['POST'])
+def post_answer(question_id):
+    # Check if the user is authenticated
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        return jsonify({"error": "Authentication required."})
+
+    data = request.get_json()
+    body = data.get('body')
+
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO answers (body, question_id, writer_id) VALUES (?, ?, ?)", (body, question_id, user_id))
+    conn.commit()
+
+    return jsonify({"message": "Answer posted successfully."})
 
 
 
