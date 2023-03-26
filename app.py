@@ -140,5 +140,46 @@ def post_answer(question_id):
 
     return jsonify({"message": "Answer posted successfully."})
 
+#UPDATING AN ANSWER
+
+@app.route('/questions/<int:question_id>/answers/<int:answer_id>', methods=['PUT'])
+def update_answer(question_id, answer_id):
+    # Check if the user is authenticated and is the author of the answer
+    user_id = request.cookies.get('user_id')
+    cursor = conn.cursor()
+    cursor.execute("SELECT writer_id FROM answers WHERE id=?", (answer_id,))
+    answer_writer_id = cursor.fetchone()[0]
+    if not user_id or int(user_id) != answer_writer_id:
+        return jsonify({"error": "Authentication required or not authorized."})
+
+    data = request.get_json()
+    body = data.get('body')
+
+    cursor.execute("UPDATE answers SET body=? WHERE id=?", (body, answer_id))
+    conn.commit()
+
+    return jsonify({"message": "Answer updated successfully."})
+
+#DELETING AN ANSWER
+
+@app.route('/questions/<int:question_id>/answers/<int:answer_id>', methods=['DELETE'])
+def delete_answer(question_id, answer_id):
+    # Check if the user is authenticated and is the author of the answer
+    user_id = request.cookies.get('user_id')
+    cursor = conn.cursor()
+    cursor.execute("SELECT writer_id FROM answers WHERE id=?", (answer_id,))
+    answer_writer_id = cursor.fetchone()[0]
+    if not user_id or int(user_id) != answer_writer_id:
+        return jsonify({"error": "Authentication required or not authorized."})
+
+    cursor.execute("DELETE FROM answers WHERE id=?", (answer_id,))
+    conn.commit()
+
+    return jsonify({"message": "Answer deleted successfully."})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
 
 
