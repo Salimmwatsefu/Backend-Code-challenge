@@ -12,7 +12,10 @@ This is a Flask app for creating and managing Q&A content stored in an SQLite3 d
 ## *Installation*
 - Clone the repository to your local machine
 - Ensure that the environment is active
-- Install the required dependencies with `pip install -r requirements.txt`
+- Install the required dependencies with `
+- pip install Flask
+- pip install sqlite3
+`
 - Create a new SQLite3 database by running the database.py script in the terminal with `python3 database.py`
 - Run the app with `python3 app.py`
 - Run the tests using `pytest tests.py`
