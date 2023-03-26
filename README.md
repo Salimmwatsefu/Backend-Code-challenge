@@ -7,6 +7,7 @@ This is a Flask app for creating and managing Q&A content stored in an SQLite3 d
 - Flask,
 - Werkzeug,
 - SQLite3
+- Pytest
 
 
 ## *Installation*
