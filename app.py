@@ -51,3 +51,35 @@ def login():
         return response
     else:
         return jsonify({"error": "Invalid username or password."})
+    
+
+#FETCH ALL QUESTIONS
+
+@app.route('/questions', methods=['GET'])
+def questions():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM questions")
+    questions = cursor.fetchall()
+
+    return jsonify({"questions": questions})
+
+#POST A QUESTION
+
+@app.route('/questions', methods=['POST'])
+def post_question():
+    # Check if the user is authenticated
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        return jsonify({"error": "Authentication required."})
+    
+    data = request.get_json()
+    body = data.get('body')
+
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO questions (body, writer_id) VALUES (?, ?)", (body, user_id))
+    conn.commit()
+
+    return jsonify({"message": "Question posted successfully."})
+
+
+
