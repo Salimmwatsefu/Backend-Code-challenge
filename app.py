@@ -91,7 +91,7 @@ def post_question():
 
 @app.route('/questions/<int:question_id>', methods=['GET'])
 def get_question(question_id):
-    
+
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM questions WHERE id=?", (question_id,))
     question = cursor.fetchone()
@@ -99,6 +99,27 @@ def get_question(question_id):
     answers = cursor.fetchall()
 
     return jsonify({"question": question, "answers": answers})
+
+
+
+#DELETE A QUESTION
+
+@app.route('/questions/<int:question_id>', methods=['DELETE'])
+def delete_questions(question_id):
+    #check if user is authenticated and is the question's writer
+    user_id = request.cookies.get('user_id')
+    cursor = conn.cursor()
+    cursor.execute("SELECT writer_id FROM questions WHERE id=?", (question_id,))
+    question_writer_id = cursor.fetchone()[0]
+    if not user_id or int(user_id) != question_writer_id:
+        return jsonify({"error": "Authentication required or not authorized."})
+    
+     #delete the question and its answers
+    cursor.execute("DELETE FROM answers WHERE question_id=?", (question_id,))
+    cursor.execute("DELETE FROM questions WHERE id=?", (question_id,))
+    conn.commit()
+
+    return jsonify({"message": "Question has been deleted."})
 
 
 
