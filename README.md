@@ -3,9 +3,12 @@
 This is a Flask app for creating and managing Q&A content stored in an SQLite3 database. The app allows users to register, login, post questions, answers the questions, and update/delete questions and answers.
 
 ## *Requirements*
--Python 3.6 or higher
--Flask
--Werkzeug
+-Python 3.6 or higher,
+
+-Flask,
+
+-Werkzeug,
+
 -SQLite3
 
 
